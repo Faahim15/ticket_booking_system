@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+    <p class="font-bold">Error!</p>
+    <p class="block sm:inline">{{ error }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="bg-blue-300 px-3 py-4 rounded-xl my-6">
+    <h1 class="font-bold text-3xl text-center pb-5">Ticket Booking</h1>
+    <div class="w-full mt-10">
+        <form method="post" class="bg-blue-50 shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+            {% endfor %}
+
+            <div class="flex flex-wrap -mx-3 mb-6">
+
+                <!-- -----------name------------ -->
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.From.id_for_label }}">
+                        {{ form.From.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="text" name="{{ form.From.name }}" id="{{ form.From.id_for_label }}"
+                        placeholder="Enter origin"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.From.errors %}
+                    {% for error in form.From.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.to.id_for_label }}">
+                        {{ form.to.label }}
+                    </label>
+
+
+                    <input type="text" name="{{ form.to.name }}" id="{{ form.to.id_for_label }}"
+                        placeholder="Enter destination"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.to.errors %}
+                    {% for error in form.to.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.date.id_for_label }}">
+                        {{ form.date.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}"
+                        id="{{ form.date.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.date.errors %}
+                    {% for error in form.date.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.tickets.id_for_label }}">
+                        {{ form.tickets.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="number" name="{{ form.tickets.name }}" value="{{ form.tickets.value }}"
+                        id="{{ form.tickets.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.tickets.errors %}
+                    {% for error in form.tickets.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+
+
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button
+                    class="bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-7 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

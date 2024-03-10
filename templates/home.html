@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ block.super }}
+{# Additional content specific to the home page goes here #}
+<h1>Welcome to the Ticket Booking System!</h1>
+
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

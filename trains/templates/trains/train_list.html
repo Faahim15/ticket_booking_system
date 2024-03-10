@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+    <p class="font-bold">Error!</p>
+    <p class="block sm:inline">{{ error }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="bg-blue-300 px-3 py-4 rounded-xl my-6">
+    <h1 class="font-bold text-3xl text-center pb-5">{{type}}</h1>
+    <div class="w-full mt-10">
+        <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+            {% endfor %}
+
+            <div class="flex flex-wrap -mx-3 mb-6">
+
+                <!-- -----------name------------ -->
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.name.id_for_label }}">
+                        {{ form.name.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="text" name="{{ form.name.name }}" value="{{ form.name.value}}"
+                        id="{{ form.name.id_for_label }}" placeholder="Enter your train name"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.name.errors %}
+                    {% for error in form.name.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.train_number.id_for_label }}">
+                        {{ form.train_number.label }}
+                    </label>
+
+
+                    <input type="number" name="{{ form.train_number.name }}" value="{{ form.train_number.value }}"
+                        id="{{ form.train_number.id_for_label }}" placeholder="Enter train number"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.train_number.errors %}
+                    {% for error in form.train_number.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.origin.id_for_label }}">
+                        {{ form.origin.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="text" name="{{ form.origin.name }}" value="{{ form.origin.value }}"
+                        id="{{ form.origin.id_for_label }}" placeholder="Enter train origin"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.origin.errors %}
+                    {% for error in form.origin.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.destination.id_for_label }}">
+                        {{ form.destination.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="text" name="{{ form.destination.name }}" value="{{ form.destination.value }}"
+                        id="{{ form.destination.id_for_label }}" placeholder="Enter train destination"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.destination.errors %}
+                    {% for error in form.destination.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.departure_time.id_for_label }}">
+                        {{ form.departure_time.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="time" name="{{ form.departure_time.name }}" value="{{ form.departure_time.value }}"
+                        id="{{ form.departure_time.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.departure_time.errors %}
+                    {% for error in form.departure_time.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.arrival_time.id_for_label }}">
+                        {{ form.arrival_time.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="time" name="{{ form.arrival_time.name }}" value="{{ form.arrival_time.value }}"
+                        id="{{ form.arrival_time.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.arrival_time.errors %}
+                    {% for error in form.arrival_time.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.total_seats.id_for_label }}">
+                        {{ form.total_seats.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="number" name="{{ form.total_seats.name }}" value="{{ form.total_seats.value }}"
+                        id="{{ form.total_seats.id_for_label }}" placeholder="Enter total seat"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.total_seats.errors %}
+                    {% for error in form.total_seats.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        for="{{ form.available_seats.id_for_label }}">
+                        {{ form.available_seats.label }}
+                    </label>
+
+                    {# Customize the rendering of the input field #}
+                    <input type="number" name="{{ form.available_seats.name }}" value="{{ form.available_seats.value }}"
+                        id="{{ form.available_seats.id_for_label }}" placeholder="Enter available seats"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+
+                    {% if form.available_seats.errors %}
+                    {% for error in form.available_seats.errors %}
+                    <p class="text-red-600 text-sm italic pb-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-7 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

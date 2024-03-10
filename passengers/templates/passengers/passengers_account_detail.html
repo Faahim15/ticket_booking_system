@@ -1,0 +1,121 @@
+{%extends 'base.html'%}
+{%block styles%}
+<style>
+    .profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 80px;
+        margin-bottom: 100px;
+
+    }
+
+    #image-postM {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .passenger {
+        border: 1px solid rgb(31, 237, 237);
+        background-color: rgba(160, 224, 248, 0.751);
+        border-radius: 10px;
+        font-family: 'Times New Roman', Times, serif;
+        padding: 5px;
+
+
+    }
+
+    h1 {
+        font-size: 32px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 700;
+
+    }
+
+    .info {
+        border: 1px solid #bed6fc;
+        /* background-color: whitesmoke; */
+        border-radius: 15px;
+        padding: 13px;
+        width: 500px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .title {
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: lighter;
+        color: rgba(9, 121, 121, 0.621);
+
+    }
+
+    .details-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 10px;
+    }
+</style>
+
+
+{%endblock%}
+
+{%block content%}
+{%if user.is_authenticated%}
+<div class="content">
+    <div class="text-blue-900 my-auto font-black px-5 " style="font-size: 15px; margin-top: 10px;">Welcome,
+        {{request.user.account.first_name }}
+        (balance :
+        {{request.user.deposit.balance}}Tk.) </div>
+</div>
+{%endif%}
+
+<div class="profile">
+
+    <div id='image-postM'>
+        <img src="{{user.account.profile_pic.url}}" alt=""> <br>
+
+    </div>
+
+    <h1>{{user.username}}</h1>
+    <div class="passenger">
+        <button>Passenger</button>
+    </div>
+    <a href="{% url 'edit_profile' %}" class="text-white px-4 py-2 rounded hover:bg-blue-700 "
+        style=" margin-top: 10px; display: block; width: 15%; text-align: center; background-color: rgba(35, 183, 236, 0.925); font-family: 'Courier New', Courier, monospace;">Edit
+        profile</a>
+    <a href="{% url 'change_password' %}" class="text-white px-4 py-2 rounded hover:bg-blue-700 "
+        style=" margin-top: 10px; display: block; width: 15%; text-align: center; background-color: rgba(35, 183, 236, 0.925); font-family: 'Courier New', Courier, monospace;">Change
+        password</a>
+    <div class="details-info">
+        <div class="info bg-blue-50">
+            <p class="title">Email</p>
+            <span>{{user.email}}</span>
+        </div>
+        <div class="info bg-blue-50">
+            <p class="title">Full Name</p>
+            <span>{{user.account.first_name}} {{user.account.last_name}}</span>
+        </div>
+        <div class="info bg-blue-50">
+            <p class="title">NID No.</p>
+            <span>{{user.account.nid_no}}</span>
+        </div>
+        <div class="info bg-blue-50">
+            <p class="title">Address</p>
+            <span>{{user.account.address}}</span>
+        </div>
+        <div class="info bg-blue-50">
+            <p class="title">Gender</p>
+            <span> {{user.account.gender}}</span>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+{%endblock%}
