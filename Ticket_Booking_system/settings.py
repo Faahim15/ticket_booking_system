@@ -1,7 +1,8 @@
 
 
 from pathlib import Path
-import environ
+import environ 
+import dj_database_url
 env = environ.Env()
 environ.Env.read_env()
 
@@ -13,8 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2kfw-b*$vo^_36d$lanuxc2)2mk8%6v+!^h&8c84o+t4l$+1-t'
 
+SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -71,12 +72,20 @@ WSGI_APPLICATION = 'Ticket_Booking_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# } 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default='postgres://ticketbooker_user:WpaDHy5dxlU8scq8skMMBIwzrFVPddX7@dpg-cnmsbbacn0vc738ft55g-a/ticketbooker',
+    )
 }
+
 
 
 # Password validation
