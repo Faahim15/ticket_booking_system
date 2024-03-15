@@ -111,7 +111,10 @@
                         {{ form.departure_time.label }}
                     </label>
 
-                    {{form.departure_time}}
+                    {# Customize the rendering of the input field #}
+                    <input type="time" name="{{ form.departure_time.name }}" value="{{ form.departure_time.value }}"
+                        id="{{ form.departure_time.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
 
                     {% if form.departure_time.errors %}
                     {% for error in form.departure_time.errors %}
@@ -127,7 +130,10 @@
                         {{ form.arrival_time.label }}
                     </label>
 
-                    {{form.arrival_time}}
+                    {# Customize the rendering of the input field #}
+                    <input type="time" name="{{ form.arrival_time.name }}" value="{{ form.arrival_time.value }}"
+                        id="{{ form.arrival_time.id_for_label }}"
+                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
 
                     {% if form.arrival_time.errors %}
                     {% for error in form.arrival_time.errors %}
