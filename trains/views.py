@@ -93,7 +93,6 @@ def ticket_booking(request):
                 try:
                     acc = AccountModel.objects.get(user_acc = request.user) 
                 except AccountModel.DoesNotExist:
-                    acc = None
                     messages.error(request, 'An account is required to proceed. Please make a deposit to create your account.')
 
                       
