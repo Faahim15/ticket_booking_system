@@ -67,7 +67,7 @@ def activate(request, uid64, token):
         user.is_active = True
         
         user.save()
-        AccountModel.Create(
+        AccountModel.objects.Create(
             user_acc = user,
             balance = 0,
             total_buyed_tickets = 0
