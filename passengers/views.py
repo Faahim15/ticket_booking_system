@@ -67,12 +67,7 @@ def activate(request, uid64, token):
         user.is_active = True
         
         user.save()
-        account_instance = AccountModel(
-        user_acc=user,
-        balance=0,
-        total_buyed_tickets=0
-        )
-        account_instance.save()
+        
         messages.success(request, 'Your email has been confirmed. You can now login.')
         return redirect('login')
     else:

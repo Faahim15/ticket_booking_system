@@ -89,8 +89,12 @@ def ticket_booking(request):
 
             try:
                 train_obj = Train.objects.get(origin=from_location, destination=to) 
-                acc = AccountModel.objects.get(user_acc = request.user) 
                 total_price = tickets * train_obj.ticket_price 
+                try:
+                    acc = AccountModel.objects.get(user_acc = request.user) 
+                except AccountModel.DoesNotExist:
+                    messages.error(request, 'An account is required to proceed. Please make a deposit to create your account.')
+
                       
                 if acc.total_buyed_tickets > 3: 
                     messages.error(request, "Oops! You've already purchased 3 tickets. To ensure fair access, we limit purchases to a maximum of 3 tickets per transaction. Thank you.")
