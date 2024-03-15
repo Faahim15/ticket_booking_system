@@ -65,7 +65,13 @@ def activate(request, uid64, token):
     
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
+        
         user.save()
+        AccountModel.Create(
+            user_acc = user,
+            balance = 0,
+            total_buyed_tickets = 0
+        )
         messages.success(request, 'Your email has been confirmed. You can now login.')
         return redirect('login')
     else:
