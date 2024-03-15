@@ -86,13 +86,14 @@ def ticket_booking(request):
             date = form.cleaned_data['date']
             tickets = form.cleaned_data['tickets'] 
             choose_class = form.cleaned_data['choose_class']
-
+            acc = None
             try:
                 train_obj = Train.objects.get(origin=from_location, destination=to) 
                 total_price = tickets * train_obj.ticket_price 
                 try:
                     acc = AccountModel.objects.get(user_acc = request.user) 
                 except AccountModel.DoesNotExist:
+                    acc = None
                     messages.error(request, 'An account is required to proceed. Please make a deposit to create your account.')
 
                       
