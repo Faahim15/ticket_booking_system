@@ -25,27 +25,36 @@ from django.contrib.auth.decorators import login_required
 class UserRegistrationView(CreateView):
     form_class = UserRegistrationForm
     template_name = 'passengers/signup.html'
-    success_url = reverse_lazy('login') 
+    success_url = reverse_lazy('login')
 
-    def form_valid(self, form): 
-        response = super().form_valid(form) 
-        user = form.save(commit=False) 
-        # Generate token and uid
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk)) 
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+            user = form.save(commit=False)
 
-        # Build the confirmation link
-        confirm_link = f"http://127.0.0.1:8000/passengers/active/{uid}/{token}" 
+            # Generate token and uid
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        # Compose email
-        email_subject = "Confirm Your Email"
-        email_body = render_to_string('passengers/confirmation_email.html', {'confirm_link': confirm_link})
-        # Send email
-        email = EmailMultiAlternatives(email_subject, '', to=[user.email])
-        email.attach_alternative(email_body, "text/html")
-        email.send()
-        messages.info(self.request, "Check your email for confirmation.") 
-        return response 
+            # Build the confirmation link
+            confirm_link = f"https://ticket-booking-system-gvch.onrender.com/passengers/active/{uid}/{token}"
+
+            # Compose email
+            email_subject = "Confirm Your Email"
+            email_body = render_to_string('passengers/confirmation_email.html', {'confirm_link': confirm_link})
+
+            # Send email
+            email = EmailMultiAlternatives(email_subject, '', to=[user.email])
+            email.attach_alternative(email_body, "text/html")
+            email.send()
+
+            messages.info(self.request, "Check your email for confirmation.")
+            return response
+
+        except Exception as e:
+            # Handle any exceptions that occur during user registration or email sending
+            messages.error(self.request, f"An error occurred: {str(e)}")
+            return super().form_invalid(form) 
     
 def activate(request, uid64, token):
     try:
