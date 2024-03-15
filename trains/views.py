@@ -92,37 +92,38 @@ def ticket_booking(request):
                 total_price = tickets * train_obj.ticket_price 
                 try:
                     acc = AccountModel.objects.get(user_acc = request.user) 
-                except AccountModel.DoesNotExist:
-                    messages.error(request, 'An account is required to proceed. Please make a deposit to create your account.')
+                
 
                       
-                if acc.total_buyed_tickets > 3: 
-                    messages.error(request, "Oops! You've already purchased 3 tickets. To ensure fair access, we limit purchases to a maximum of 3 tickets per transaction. Thank you.")
-                
-                elif total_price <= acc.balance:
-                    acc.balance -= total_price
-                    if train_obj.available_seats >= tickets:
-                        train_obj.available_seats -= tickets 
-                        acc.total_buyed_tickets += tickets
-                        train_obj.save() 
-                        acc.save() 
-                        TicketBooking.objects.create( 
-                            user = request.user,
-                            train = train_obj,
-                            From=from_location,
-                            to=to,
-                            date=date,
-                            tickets=tickets,
-                            choose_class = choose_class
-                        )
-                        messages.success(request, f"Success! You have successfully purchased {tickets} tickets from {from_location} to {to} in {choose_class} class for {date}.Your booking is confirmed. We appreciate your trust in our ticket booking service. Wishing you a safe and pleasant journey!")
+                    if acc.total_buyed_tickets > 3: 
+                        messages.error(request, "Oops! You've already purchased 3 tickets. To ensure fair access, we limit purchases to a maximum of 3 tickets per transaction. Thank you.")
+                    
+                    elif total_price <= acc.balance:
+                        acc.balance -= total_price
+                        if train_obj.available_seats >= tickets:
+                            train_obj.available_seats -= tickets 
+                            acc.total_buyed_tickets += tickets
+                            train_obj.save() 
+                            acc.save() 
+                            TicketBooking.objects.create( 
+                                user = request.user,
+                                train = train_obj,
+                                From=from_location,
+                                to=to,
+                                date=date,
+                                tickets=tickets,
+                                choose_class = choose_class
+                            )
+                            messages.success(request, f"Success! You have successfully purchased {tickets} tickets from {from_location} to {to} in {choose_class} class for {date}.Your booking is confirmed. We appreciate your trust in our ticket booking service. Wishing you a safe and pleasant journey!")
 
-                        return redirect('home')  
-                    else:
-                        messages.error(request, f"There are not enough available seats on the train for {choose_class} class.")
-                        return redirect('home')
-                else: 
-                     messages.error(request, f"You don't have sufficient balance to buy tickets.") 
+                            return redirect('home')  
+                        else:
+                            messages.error(request, f"There are not enough available seats on the train for {choose_class} class.")
+                            return redirect('home')
+                    else: 
+                        messages.error(request, f"You don't have sufficient balance to buy tickets.") 
+                except AccountModel.DoesNotExist:
+                    messages.error(request, 'An account is required to proceed. Please make a deposit to create your account.')
 
             except Train.DoesNotExist:
                 messages.error(request, f'Enter valid location')
