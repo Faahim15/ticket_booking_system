@@ -29,11 +29,7 @@ class Train(models.Model):
     train_pic = models.ImageField(upload_to='passengers/media/uploads/',null = True, blank=True) 
     total_seats = models.PositiveIntegerField()
     available_seats = models.PositiveIntegerField() 
-    ac_b = models.PositiveIntegerField(default =0)
-    ac_s = models.PositiveIntegerField(default =0)
-    snigdha= models.PositiveIntegerField(default =0)
-    s_chair = models.PositiveIntegerField(default =0)
-    f_seat = models.PositiveIntegerField(default =0)
+    
 
     def __str__(self):
         return f"{self.train_number} - {self.name}"

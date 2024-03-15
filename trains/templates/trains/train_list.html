@@ -73,7 +73,7 @@
                         {{ form.origin.label }}
                     </label>
 
-                    {# Customize the rendering of the input field #}
+
                     <input type="text" name="{{ form.origin.name }}" value="{{ form.origin.value }}"
                         id="{{ form.origin.id_for_label }}" placeholder="Enter train origin"
                         class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
@@ -111,10 +111,7 @@
                         {{ form.departure_time.label }}
                     </label>
 
-                    {# Customize the rendering of the input field #}
-                    <input type="time" name="{{ form.departure_time.name }}" value="{{ form.departure_time.value }}"
-                        id="{{ form.departure_time.id_for_label }}"
-                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                    {{form.departure_time}}
 
                     {% if form.departure_time.errors %}
                     {% for error in form.departure_time.errors %}
@@ -130,10 +127,7 @@
                         {{ form.arrival_time.label }}
                     </label>
 
-                    {# Customize the rendering of the input field #}
-                    <input type="time" name="{{ form.arrival_time.name }}" value="{{ form.arrival_time.value }}"
-                        id="{{ form.arrival_time.id_for_label }}"
-                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                    {{form.arrival_time}}
 
                     {% if form.arrival_time.errors %}
                     {% for error in form.arrival_time.errors %}
@@ -203,8 +197,7 @@
                         for="{{ form.train_pic.id_for_label }}">
                         {{ form.train_pic.label }}
                     </label>
-                    <input type="file" name="{{ form.train_pic.name }}" id="{{ form.train_pic.id_for_label }}"
-                        class="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                    {{form.train_pic}}
 
                     {% if form.train_pic.errors %}
                     {% for error in form.train_pic.errors %}
