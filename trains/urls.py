@@ -1,10 +1,10 @@
 from django.urls import path 
 from django.conf import settings
 from django.conf.urls.static import static
-from . views import TrainCreateView,TrainUpdateView,TrainListView,TrainDeleteView,Home,leave_review
+from . views import train_create_view,TrainUpdateView,TrainListView,TrainDeleteView,Home,leave_review
 
 urlpatterns = [
-    path('add_train/',TrainCreateView.as_view(),name='add_train'), 
+    path('add_train/',train_create_view,name='add_train'), 
     path('edit/<int:pk>/', TrainUpdateView.as_view(), name='train_edit'),
     path('admin_dashboard/', TrainListView.as_view(), name='admin_dashboard'), 
     path('train/<int:pk>/delete/', TrainDeleteView.as_view(), name='train_delete'), 

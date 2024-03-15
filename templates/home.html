@@ -1,15 +1,30 @@
-{% extends 'base.html' %}
+{%load static%}
+<div class="home">
+    <div class="search">
+        <img class="img_postM" src="{% static 'images/search.png'%}" alt="">
+        <span style="color: black; font-weight: bold; font-size: 24px; ">Search</span>
+        <p class="text-justify" style="width: 300px; padding-top: 10px;"> Choose your origin, destination, journey dates
+            and search for
+            trains</p>
+    </div>
+    <div class="search">
+        <img class="img_postM" src="{% static 'images/select.png'%}" alt="">
+        <span style="color: black; font-weight: bold; font-size: 24px; ">Select</span>
+        <p class="text-justify" style="width: 300px; padding-top: 10px;">Select your desired trip and choose your seats
+        </p>
+    </div>
+    <div class="search">
+        <img class="img_postM" src="{% static 'images/payment.png'%}" alt="">
+        <span style="color: black; font-weight: bold; font-size: 24px; ">Pay</span>
+        <p class="text-justify" style="width: 300px; padding-top: 10px;"> Pay for the tickets via Bkash / Credit Cards
+            or MFS.</p>
 
-{% block content %}
-{{ block.super }}
-{# Additional content specific to the home page goes here #}
-<h1>Welcome to the Ticket Booking System!</h1>
+    </div>
+</div>
 
-
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-
-{% endblock %}
+<div class=" bg-red-100">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path
+            d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+    </svg> -->
+</div>

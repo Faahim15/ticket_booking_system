@@ -63,7 +63,9 @@
                 Destination: <span class="text-green-700">{{ train.destination }}</span><br>
                 Departure Time: <span class="text-red-700">{{ train.departure_time }}</span> <br>
                 Arrival Time: <span class="text-purple-700">{{ train.arrival_time }}</span> <br>
+                Ticket Price: <span class="text-blue-700">{{ train.ticket_price }}Tk.</span> <br>
                 Available Seat: <span class="text-teal-700">{{ train.available_seats }}</span>
+
             </p>
             {% if user.is_authenticated%}
             <div class="flex justify-center items-center mt-4">

@@ -15,7 +15,12 @@ class UserRegistrationForm(UserCreationForm):
             RegexValidator(r'^[0-9]{10}$', message='Must be a 10-digit number.')
         ]
     ) 
-    gender = forms.CharField(max_length = 100)
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ]
+    gender = forms.ChoiceField(choices=GENDER_CHOICES)
     address = forms.CharField(max_length = 400)
     
     class Meta:

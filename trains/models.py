@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User 
 from django.utils import timezone
 # Create your models here.
+SEAT_CHOICES = [
+    ('AC_B','AC_B'),
+    ('AC_S','AC_S'),
+    ('SNIGDHA','SNIGDHA'),
+    ('S_CHAIR','S_CHAIR'),
+    ('SHULOV','SHULOV'),
+    ('F_SEAT','F_SEAT'),
+]
 class Station(models.Model):
     station_name = models.CharField(max_length = 100,default = '') 
     slug = models.SlugField(max_length=100,unique=True, null=True, blank=True) 
@@ -10,18 +18,22 @@ class Station(models.Model):
         return self.station_name  
     
 class Train(models.Model): 
-    station_name = models.ForeignKey(Station, related_name='origin_station', on_delete=models.CASCADE ,default = None)
+    station_name = models.ForeignKey(Station, related_name='origin_station', on_delete=models.CASCADE )
     train_number = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100 ,default = '')
     origin = models.CharField(max_length=100,default = '')
     destination = models.CharField(max_length=100,default = '')
     departure_time = models.TimeField()
     arrival_time = models.TimeField() 
-    ticket_price = models.PositiveIntegerField(default = 100)
+    ticket_price = models.PositiveIntegerField()
     train_pic = models.ImageField(upload_to='passengers/media/uploads/',null = True, blank=True) 
     total_seats = models.PositiveIntegerField()
     available_seats = models.PositiveIntegerField() 
-    
+    ac_b = models.PositiveIntegerField(default =0)
+    ac_s = models.PositiveIntegerField(default =0)
+    snigdha= models.PositiveIntegerField(default =0)
+    s_chair = models.PositiveIntegerField(default =0)
+    f_seat = models.PositiveIntegerField(default =0)
 
     def __str__(self):
         return f"{self.train_number} - {self.name}"
@@ -38,6 +50,7 @@ class TicketBooking(models.Model):
     to = models.CharField(max_length = 100) 
     date = models.DateField() 
     tickets = models.PositiveIntegerField() 
+    choose_class = models.CharField(choices= SEAT_CHOICES,default = '')
 
     def __str__(self) -> str:
         return f'From {self.From} to {self.to}' 

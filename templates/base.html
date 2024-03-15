@@ -5,44 +5,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- slider -->
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
+        defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- tailwind -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
     <title>Ticket Booking System</title>
     {%block styles%}
 
 
     {%endblock%}
     <style>
-        .home_content {
-            display: flex;
-            justify-content: space-around;
-        }
-
-
-
         nav {
 
             background-color: #F52549 !important;
 
         }
-
-
-
-        .form_content {
-            margin-right: 550px;
-            margin-top: 150px;
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        .btn-dsgn {
-            background-color: #F52549;
-            width: 600px;
-            margin-left: 18px;
-
-        }
-
-
 
         #bgI {
             background-image: url('{% static "images/train1.jpg"%}');
@@ -53,10 +37,92 @@
 
         }
 
+
+
+        .home {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            column-gap: 80PX;
+            padding: 20px;
+            /* margin-top: 20px; */
+            /* margin-bottom: 100px; */
+
+
+        }
+
+
+
+        .img_postM {
+            height: 300px;
+            width: 300px;
+            border: 1px solid rgb(242, 222, 222);
+            color: #ecd0d5;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+        btn-dsgn:hover {
+            background-color: rgba(243, 247, 126, 0.881) !important;
+        }
+
+
+
         footer {
             position: fixed !important;
-            bottom: 0 !important;
+            bottom: 0;
             width: 100%;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 3px;
+        }
+
+        @media only screen and (min-width: 425px) {
+            #bgI {
+                background-image: url('{% static "images/train1.jpg"%}');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 690px;
+
+            }
+
+            .home_content {
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+            }
+
+
+
+
+            .img_postM {
+                height: 300px;
+                width: 300px;
+                border: 1px solid rgb(242, 222, 222);
+                color: #ecd0d5;
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            }
+
+            .home {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 100px;
+                background-color: #13010104 !important;
+
+            }
+
+
+
         }
     </style>
 </head>
@@ -69,131 +135,195 @@
     {% include 'messages.html' %}
     {%block content%}
     <div id="bgI">
-        <div class="home_content">
+        <div class="container mx-auto p-4 ">
+            <h1 class="text-center text-white text-4xl font-bold mb-8">
+                Welcome to TicketBooker
+            </h1>
+            <p class="text-center text-white text-lg">Your one-stop destination for booking train tickets
+                conveniently.</p>
+        </div>
 
-            <div>
-                <form method="post" class=" shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for hidden_field in form.hidden_fields %}
-                    {{ hidden_field.errors }}
-                    {{ hidden_field }}
+        <div class="pt-10" style="width: 700px; margin-left: 100px;">
+
+            <form method="post" class=" shadow-md rounded px-4 md:px-8 pt-6 pb-8 mb-4 ">
+                {% csrf_token %}
+                {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field.errors }}
+                {{ hidden_field }}
+                {% endfor %}
+
+                <div class="flex gap-4 w-90">
+
+                    <div class="mb-6 flex-grow lg:w-1/2">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+                            for="{{ form.From.id_for_label }}">
+                            {{ form.From.label }}
+                        </label>
+                        <input type="text" name="{{ form.From.name }}" id="{{ form.From.id_for_label }}"
+                            placeholder="Enter origin"
+                            class="border border-green-500 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                        {% if form.From.errors %}
+                        {% for error in form.From.errors %}
+                        <p class="text-white text-sm italic pb-2">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-6 flex-grow lg:w-1/2">
+                        <label class="block uppercase tracking-wide text-white text-xs text-white font-bold mb-2"
+                            for="{{ form.to.id_for_label }}">
+                            {{ form.to.label }}
+                        </label>
+                        <input type="text" name="{{ form.to.name }}" id="{{ form.to.id_for_label }}"
+                            placeholder="Enter destination"
+                            class="border  border-green-500 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                        {% if form.to.errors %}
+                        {% for error in form.to.errors %}
+                        <p class="text-white text-sm italic pb-2">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex gap-4 w-90">
+                    <div class="mb-6 flex-grow lg:w-1/2">
+                        <label class="block uppercase tracking-wide  text-xs text-white font-bold mb-2 mt-5"
+                            for="{{ form.date.id_for_label }}">
+                            Date of journey
+                        </label>
+                        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}"
+                            id="{{ form.date.id_for_label }}"
+                            class="border    border-green-500 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                        {% if form.date.errors %}
+                        {% for error in form.date.errors %}
+                        <p class="text-white text-sm italic pb-2">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-6 flex-grow lg:w-1/2">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5"
+                            for="{{ form.tickets.id_for_label }}">
+                            {{ form.tickets.label }}
+                        </label>
+                        <input type="number" name="{{ form.tickets.name }}" value="{{ form.tickets.value }}"
+                            id="{{ form.tickets.id_for_label }}"
+                            class="border  border-green-500 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Type the number of tickets">
+                        {% if form.tickets.errors %}
+                        {% for error in form.tickets.errors %}
+                        <p class="text-white text-sm italic pb-2">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5"
+                        for="{{ form.tickets.id_for_label }}">
+                        {{ form.choose_class.label }}
+                    </label>
+                    {{form.choose_class}}
+                    {% if form.choose_class.errors %}
+                    {% for error in form.choose_class.errors %}
+                    <p class="text-white text-sm italic pb-2">
+                        {{ error }}
+                    </p>
                     {% endfor %}
-
-                    <div class="form_content">
-
-                        <!-- -----------name------------ -->
-                        <div class="md:w-1/2  mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                for="{{ form.From.id_for_label }}" style="color: white;">
-                                {{ form.From.label }}
-                            </label>
-
-                            <input type="text" name="{{ form.From.name }}" id="{{ form.From.id_for_label }}"
-                                placeholder="Enter origin"
-                                class="border rounded w-72 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
-
-                            {% if form.From.errors %}
-                            {% for error in form.From.errors %}
-                            <p class="text-red-600 text-sm italic pb-2">
-                                {{ error }}
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="md:w-1/2 to mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                for="{{ form.to.id_for_label }}" style="color: white;">
-                                {{ form.to.label }}
-                            </label>
-
-
-                            <input type="text" name="{{ form.to.name }}" id="{{ form.to.id_for_label }}"
-                                placeholder="Enter destination"
-                                class="border rounded w-72 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
-
-                            {% if form.to.errors %}
-                            {% for error in form.to.errors %}
-                            <p class="text-red-600 text-sm italic pb-2">
-                                {{ error }}
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class=" md:w-1/2  mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-white-100 text-xs font-bold mb-2 mt-5"
-                                for="{{ form.date.id_for_label }}" style="color: white;">
-                                Date of journey
-                            </label>
-
-
-                            <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}"
-                                id="{{ form.date.id_for_label }}"
-                                class="border rounded w-72 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="pick a date">
-
-                            {% if form.date.errors %}
-                            {% for error in form.date.errors %}
-                            <p class="text-red-600 text-sm italic pb-2">
-                                {{ error }}
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                        <div class=" md:w-1/2  mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 mt-5"
-                                for="{{ form.tickets.id_for_label }}" style="color: white;">
-                                {{ form.tickets.label }}
-                            </label>
-
-
-                            <input type="number" name="{{ form.tickets.name }}" value="{{ form.tickets.value }}"
-                                id="{{ form.tickets.id_for_label }}"
-                                class="border rounded w-72 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="Type the number of tickets">
-
-                            {% if form.tickets.errors %}
-                            {% for error in form.tickets.errors %}
-                            <p class="text-red-600 text-sm italic pb-2">
-                                {{ error }}
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-
-
-
-                    </div>
-                    {% if user.is_authenticated %}
-                    <div class="flex items-center justify-between">
-                        <button
-                            class=" btn-dsgn hover:bg-yellow-500 text-white font-bold py-2 px-7 rounded focus:outline-none focus:shadow-outline"
-                            type="submit">
-                            Book now
-                        </button>
-                    </div>
-                    {% else %}
-                    <div class="flex items-center justify-between">
-                        <button
-                            class="btn-dsgn  hover:bg-yellow-500 text-white font-bold py-2 px-7 rounded focus:outline-none focus:shadow-outline cursor-not-allowed"
-                            type="submit" disabled>
-                            Book now
-                        </button>
-                    </div>
-
                     {% endif %}
-                </form>
-            </div>
+                </div>
+        </div>
 
+        {% if user.is_authenticated %}
+        <div class="mt-6">
+            <button class="w-full hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded"
+                style="width: 50%; background-color: #F52549; margin-left: 134px;">
+                Book now
+            </button>
+        </div>
+        {% else %}
+        <div>
+            <button
+                class="w-full hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded cursor-not-allowed"
+                style="width: 50%; background-color: #F52549; margin-left: 134px;" disabled>
+                Book now
+            </button>
+        </div>
+        {% endif %}
+        </form>
+
+
+
+
+    </div>
+    </div>
+
+    {%include 'home.html'%}
+    <h1 class="text-6xl text-center text-bold text-yellow-500 mb-2">Customer reviews</h1>
+    {%if reviews%}
+
+    <div
+        class="swiffy-slider slider-item-show2 slider-item-reveal slider-nav-outside slider-nav-round slider-nav-visible slider-indicators-outside slider-indicators-round slider-indicators-dark slider-nav-animation slider-nav-animation-fadein slider-item-first-visible mb-10 bg-gray-300">
+
+        <ul class="slider-container py-4">
+
+
+            {% for review in reviews%}
+            <li class="bg-white">
+                <div class="card shadow h-100">
+                    <div class="ratio ratio-16x9">
+                        <img src="{{ user.account.profile_pic.url }}" class="rounded-full w-72 m-auto h-auto"
+                            loading="lazy" alt="user_image">
+
+                    </div>
+                    <div class="card-body p-3 p-xl-5 m-auto">
+
+                        <h3 class="card-title h5">Ratings:{{review.rating}}</h3>
+                        <p class="card-text">{{review.content}}</p>
+                        <p>{{review.created_on}}</p>
+
+                    </div>
+                </div>
+            </li>
+
+            {%endfor%}
+
+
+        </ul>
+
+        <button type="button" class="slider-nav" aria-label="Go left"></button>
+        <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
+
+        <div class="slider-indicators">
+            <button class="active" aria-label="Go to slide"></button>
+            <button aria-label="Go to slide" class=""></button>
+            <button aria-label="Go to slide" class=""></button>
+            <button aria-label="Go to slide" class=""></button>
+            <button aria-label="Go to slide" class=""></button>
         </div>
     </div>
 
+
+    {%else%}
+    <h1 class="text-red-300 text-6xl font-bold mb-40">No reviews yet.</h1>
+    {%endif%}
 
     {%endblock content%}
 
     {%endblock body%}
     {% include 'footer.html' %}
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

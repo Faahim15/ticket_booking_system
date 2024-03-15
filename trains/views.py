@@ -9,43 +9,75 @@ from django.views.generic.edit import UpdateView
 from django.views.generic import DeleteView  
 from . models import TicketBooking 
 from django.contrib import messages 
-from . models import Train, Station,Review 
-
+from . models import Train, Station,Review  
+from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.decorators import user_passes_test  
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+class SuperuserRequiredMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('home')  # Redirect non-superusers to the home page
+        return super().dispatch(request, *args, **kwargs)
 # Create your views here.
-class TrainCreateView(CreateView):
-    model = Train
-    form_class = TrainForm
-    template_name = 'trains/train_list.html'
-    success_url = reverse_lazy('home')   
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['type'] = 'ADD A NEW TRAIN INFORMATION'  # Make sure to add a comma at the end
-        return context
+
+@staff_member_required
+def train_create_view(request):
+    if request.method == 'POST':
+        form = TrainForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Train information added successfully!")
+            return redirect('admin_dashboard')
+        
+    else:
+        form = TrainForm()
+    
+    context = {
+        'form': form,
+        'type': 'ADD A NEW TRAIN INFORMATION'
+    }
+    
+    return render(request, 'trains/train_list.html', context)
    
 
-class TrainListView(ListView):
+class TrainListView(SuperuserRequiredMixin,ListView):
     model = Train
     template_name = 'trains/admin_dashboard.html' 
     context_object_name = 'trains'
 
-class TrainUpdateView(UpdateView):
+class TrainUpdateView(SuperuserRequiredMixin,UpdateView):
     model = Train
-    template_name = 'trains/train_list.html'  
+    template_name = 'trains/train_edit.html'  
     fields = '__all__'
     success_url = reverse_lazy('home')   
+    def get_initial(self):
+        initial = super().get_initial()
+        instance = self.object
+        if instance:
+            initial['train_pic'] = instance.train_pic
+        return initial
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['type'] = 'EDIT TRAIN INFORMATION'  # Make sure to add a comma at the end
+        context['type'] = 'EDIT TRAIN INFORMATION'  
         return context 
+    def form_valid(self, form):
+        messages.success(self.request, "Train information updated successfully!")
+        return super().form_valid(form)
 
-class TrainDeleteView(DeleteView):
+class TrainDeleteView(SuperuserRequiredMixin,DeleteView):
     model = Train
     template_name = 'trains/train_confirm_delete.html'
     success_url = reverse_lazy('home')
     context_object_name = 'train' 
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Train information deleted successfully!")
+        return super().delete(request, *args, **kwargs)
 
 
 def ticket_booking(request):
+    reviews = Review.objects.all()
     if request.method == 'POST':
         form = TicketBookingForm(request.POST)
         if form.is_valid():
@@ -53,29 +85,38 @@ def ticket_booking(request):
             to = form.cleaned_data['to']
             date = form.cleaned_data['date']
             tickets = form.cleaned_data['tickets'] 
+            choose_class = form.cleaned_data['choose_class']
 
             try:
                 train_obj = Train.objects.get(origin=from_location, destination=to) 
                 acc = AccountModel.objects.get(user_acc = request.user) 
-                total_price = tickets * train_obj.ticket_price
-                if total_price <= acc.balance:
+                total_price = tickets * train_obj.ticket_price 
+                      
+                if acc.total_buyed_tickets > 3: 
+                    messages.error(request, "Oops! You've already purchased 3 tickets. To ensure fair access, we limit purchases to a maximum of 3 tickets per transaction. Thank you.")
+                
+                elif total_price <= acc.balance:
                     acc.balance -= total_price
                     if train_obj.available_seats >= tickets:
                         train_obj.available_seats -= tickets 
+                        acc.total_buyed_tickets += tickets
                         train_obj.save() 
-                        acc.save() # Save the updated Train object
+                        acc.save() 
                         TicketBooking.objects.create( 
                             user = request.user,
+                            train = train_obj,
                             From=from_location,
                             to=to,
                             date=date,
-                            tickets=tickets
+                            tickets=tickets,
+                            choose_class = choose_class
                         )
-                        messages.success(request, f"Success! You have successfully purchased {tickets} tickets from {from_location} to {to}. Your booking is confirmed for {date}. Thank you for choosing our ticket booking service. Have a safe and pleasant journey!")
+                        messages.success(request, f"Success! You have successfully purchased {tickets} tickets from {from_location} to {to} in {choose_class} class for {date}.Your booking is confirmed. We appreciate your trust in our ticket booking service. Wishing you a safe and pleasant journey!")
 
-                        return redirect('home')  # Redirect to a success page
+                        return redirect('home')  
                     else:
-                        messages.error(request, f'Not enough available seats on the train.') 
+                        messages.error(request, f"There are not enough available seats on the train for {choose_class} class.")
+                        return redirect('home')
                 else: 
                      messages.error(request, f"You don't have sufficient balance to buy tickets.") 
 
@@ -85,7 +126,7 @@ def ticket_booking(request):
     else:
         form = TicketBookingForm()
 
-    return render(request, 'base.html', {'form': form}) 
+    return render(request, 'base.html', {'form': form, 'reviews':reviews}) 
 
 class Home(ListView):
     model = Train
@@ -102,7 +143,7 @@ class Home(ListView):
         context = super().get_context_data(**kwargs)
         context['station'] = Station.objects.all()
         return context
-
+@login_required
 def leave_review(request,id):
     train = get_object_or_404(Train, id=id)
     existing_review = Review.objects.filter(train=train, user_review=request.user).first() 
@@ -127,7 +168,6 @@ def leave_review(request,id):
         else:
             form = ClientReview() 
         return render(request, 'trains/leave_review.html', {'form': form})
-
 
         
     

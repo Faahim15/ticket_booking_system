@@ -19,7 +19,8 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect ,render
 from django.contrib.auth import logout 
 from django.views.generic.detail import DetailView
-from .models import PassengersAccount,AccountModel
+from .models import PassengersAccount,AccountModel 
+from django.contrib.auth.decorators import login_required
 
 class UserRegistrationView(CreateView):
     form_class = UserRegistrationForm
@@ -43,8 +44,8 @@ class UserRegistrationView(CreateView):
         email = EmailMultiAlternatives(email_subject, '', to=[user.email])
         email.attach_alternative(email_body, "text/html")
         email.send()
-
-        return HttpResponse("Check your email for confirmation") 
+        messages.info(self.request, "Check your email for confirmation.") 
+        return response 
     
 def activate(request, uid64, token):
     try:
@@ -56,9 +57,11 @@ def activate(request, uid64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
+        messages.success(request, 'Your email has been confirmed. You can now login.')
         return redirect('login')
     else:
-        return redirect('register')
+        messages.success(request, 'Your email has been confirmed. You can now login.')
+        return redirect('login')
         
 
 
@@ -69,11 +72,11 @@ class UserLoginView(LoginView):
         return reverse_lazy('profile') 
     
 
-
+@login_required
 def UserDetails(request):
     user = request.user
     return render(request, 'passengers/passengers_account_detail.html',{'user':user}) 
-
+@login_required
 def edit_profile(request):
     profile = PassengersAccount.objects.get(user = request.user)
 
@@ -81,11 +84,12 @@ def edit_profile(request):
         form = RegistrationEditForm(request.POST,request.FILES, instance = profile) 
         if form.is_valid():
             form.save() 
+            messages.success(request, 'Your profile was successfully updated!')
             return redirect('profile') 
     else:
         form = RegistrationEditForm(instance=profile)  
     return render(request,'passengers/signup.html',{'form':form}) 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -101,7 +105,7 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'passengers/change_password.html', {'form': form})        
 
-
+@login_required
 def Deposit_money(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -109,8 +113,8 @@ def Deposit_money(request):
             if form.is_valid(): 
                 deposit = form.cleaned_data['amount'] 
                 amount = Decimal(deposit) 
-                if amount < 100:
-                    messages.success(request, 'Transaction Alert: Insufficient funds. Please ensure your deposit exceeds 100Tk. for successful processing.') 
+                if amount < 100 and amount < 50000:
+                    messages.success(request, 'Transaction Alert: Insufficient funds. Please ensure your deposit exceeds 100Tk for successful processing and does not exceed 50,000Tk.') 
                 else:
                     user_model_instance, created = AccountModel.objects.get_or_create(user_acc=request.user) 
                     if user_model_instance.balance is not None:
@@ -118,7 +122,7 @@ def Deposit_money(request):
                     else: 
                         user_model_instance.balance = amount 
                     user_model_instance.save()
-                    messages.success(request, 'Deposit successful!') 
+                    messages.success(request, f'You have successfully deposited {amount}Tk.') 
                     return redirect('home')
     else:
         form = DepositForm() 
@@ -126,7 +130,7 @@ def Deposit_money(request):
 
 
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('home')

@@ -9,24 +9,20 @@ class TrainForm(forms.ModelForm):
         model = Train
         fields = '__all__'
         widgets = {
-            'arrival_time': forms.TimeInput(attrs={'type': 'time', 'placeholder': 'HH:MM'}),
-            'departure_time': forms.TimeInput(attrs={'type': 'time', 'placeholder': 'HH:MM'}),
-            'train_number': forms.TextInput(attrs={'placeholder': 'Enter Train Number'}),
-            'name': forms.TextInput(attrs={'placeholder': 'Enter Train Name'}),
-            'origin': forms.TextInput(attrs={'placeholder': 'Enter Origin'}),
-            'destination': forms.TextInput(attrs={'placeholder': 'Enter Destination'}),
-            'total_seats': forms.NumberInput(attrs={'placeholder': 'Enter Total Seats'}),
-            'available_seats': forms.NumberInput(attrs={'placeholder': 'Enter Available Seats'}),
+            
+            'train_pic': forms.ClearableFileInput(attrs={'value': '{{ form.train_pic.value }}'})
+        
         } 
 
 
 class TicketBookingForm(forms.ModelForm):
-
+    
     class Meta:
         model = TicketBooking
-        fields = ['From', 'to', 'date', 'tickets'] 
+        fields = ['From', 'to', 'date', 'tickets','choose_class'] 
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.DateInput(attrs={'type': 'date','placeholder':'Pick a date'}),
+             'choose_class':forms.Select(attrs={'class':' bg-gray-500 text-white border border-green-500 rounded-md p-2 w-full','placeholder':'Choose class'})
         } 
     
     def clean_tickets(self):
