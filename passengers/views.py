@@ -37,7 +37,7 @@ class UserRegistrationView(CreateView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
             # Build the confirmation link
-            confirm_link = f"https://ticket-booking-system-gvch.onrender.com/passengers/active/{uid}/{token}"
+            confirm_link = f"https://ticket-booking-system-2.onrender.com/passengers/active/{uid}/{token}"
 
             # Compose email
             email_subject = "Confirm Your Email"
@@ -71,8 +71,8 @@ def activate(request, uid64, token):
         messages.success(request, 'Your email has been confirmed. You can now login.')
         return redirect('login')
     else:
-        messages.success(request, 'Your email has been confirmed. You can now login.')
-        return redirect('login')
+        messages.success(request, 'Your email verification failed. Please try again.')
+        return redirect('register')
         
 
 
