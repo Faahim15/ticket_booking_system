@@ -82,7 +82,7 @@
             column-gap: 3px;
         }
 
-        @media only screen and (min-width: 375px) {
+        @media only screen and (min-width: 0) {
             #bgI {
                 background-image: url('{% static "images/train1.jpg"%}');
                 background-size: cover;
@@ -92,10 +92,7 @@
 
             }
 
-            .btn {
-                /* margin-left: 20px; */
-                width: 340px;
-            }
+
 
             .home_content {
                 display: flex;
@@ -259,14 +256,14 @@
         {% if user.is_authenticated %}
         <div class="mb-8">
             <button
-                class="bg-yellow-500 btn w-96 ml-5 lg:ml-28 lg:w-98 hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded">
+                class="bg-yellow-500 w-[20px]  ml-5 lg:ml-28 lg:w-98 hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded">
                 Book now
             </button>
         </div>
         {% else %}
         <div>
             <button
-                class="bg-yellow-500 btn w-96 ml-5  lg:ml-28 lg:w-auto hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded cursor-not-allowed"
+                class="bg-yellow-500 w-[20px] ml-5  lg:ml-28 lg:w-auto hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded cursor-not-allowed"
                 disabled>
                 Book now
             </button>
