@@ -69,7 +69,7 @@ class TrainUpdateView(SuperuserRequiredMixin,UpdateView):
 class TrainDeleteView(SuperuserRequiredMixin,DeleteView):
     model = Train
     template_name = 'trains/train_confirm_delete.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('admin_dashboard')
     context_object_name = 'train' 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Train information deleted successfully!")
