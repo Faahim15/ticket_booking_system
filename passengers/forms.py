@@ -27,27 +27,45 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1','password2','profile_pic','nid_no','gender','address'] 
 
-    def save(self,commit=True): 
-         our_user = super().save(commit=False) 
-         if commit == True:
-            our_user.save() 
-            first_name = self.cleaned_data.get('first_name')
-            last_name = self.cleaned_data.get('last_name')
-            profile_pic = self.cleaned_data.get('profile_pic')
-            nid_no = self.cleaned_data.get('nid_no')
-            gender = self.cleaned_data.get('gender')
-            address = self.cleaned_data.get('address')
-            PassengersAccount.objects.create(
-                user = our_user,
-                first_name = first_name,
-                last_name = last_name,
-                profile_pic = profile_pic,
-                nid_no = nid_no,
-                gender = gender,
-                address = address
-            ) 
-            our_user.is_active = False
-         return our_user 
+    def save(self, commit=True):
+    # Get the user instance from the form
+        our_user = super().save(commit=False)
+
+        if commit:
+            try:
+                # Save the user instance
+                our_user.save()
+
+                # Get additional data from form.cleaned_data
+                first_name = self.cleaned_data.get('first_name')
+                last_name = self.cleaned_data.get('last_name')
+                profile_pic = self.cleaned_data.get('profile_pic')
+                nid_no = self.cleaned_data.get('nid_no')
+                gender = self.cleaned_data.get('gender')
+                address = self.cleaned_data.get('address')
+
+                # Create PassengersAccount instance
+                PassengersAccount.objects.create(
+                    user=our_user,
+                    first_name=first_name,
+                    last_name=last_name,
+                    profile_pic=profile_pic,
+                    nid_no=nid_no,
+                    gender=gender,
+                    address=address
+                )
+
+                # Deactivate the user
+                our_user.is_active = False
+                our_user.save()
+
+            except Exception as e:
+                
+                our_user.delete()
+                raise e
+
+        return our_user
+
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
