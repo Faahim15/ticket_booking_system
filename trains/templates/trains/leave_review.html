@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 <section class="bg-gray-10 dark:bg-gray-900">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 mt-10">
         <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-800 dark:text-white"
             style="font-family: Georgia, 'Times New Roman', Times, serif">
             <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
@@ -13,13 +13,13 @@
         <div
             class="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
 
-            <form method="post">
+            <form method="post ">
                 {% csrf_token %}
 
                 {% for field in form %}
                 <div class="mb-4">
                     <label for="{{ field.id_for_label }}"
-                        class="block text-sm font-medium text-gray-700 dark:text-white">
+                        class="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         {{ field.label }}
                     </label>
                     {% if field.name == 'content' %}
@@ -42,7 +42,8 @@
                 </div>
                 {% endfor %}
 
-                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button type="submit"
+                    class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
                     Submit
                 </button>
 

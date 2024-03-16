@@ -64,10 +64,6 @@
 
         }
 
-        btn-dsgn:hover {
-            background-color: rgba(243, 247, 126, 0.881) !important;
-        }
-
 
 
         footer {
@@ -246,30 +242,31 @@
                             {% endif %}
                         </div>
                     </div>
-
+                    {% if user.is_authenticated %}
+                    <div class="mb-8">
+                        <button
+                            class="bg-yellow-500 w-[200px] mt-2 lg:mt-0 lg:w-full hover:bg-yellow-500 md:w-auto text-white font-bold py-2 px-4 md:px-8 rounded">
+                            Book now
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="mb-8">
+                        <button
+                            class="bg-yellow-500 mt-2 lg:mt-0 w-[200px]   lg:ml-28 lg:w-auto hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded cursor-not-allowed"
+                            disabled>
+                            Book now
+                        </button>
+                    </div>
+                    {% endif %}
 
                 </div>
+
             </form>
         </div>
 
 
-        {% if user.is_authenticated %}
-        <div class="mb-8">
-            <button
-                class="bg-yellow-500 w-[20px]  ml-5 lg:ml-28 lg:w-98 hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded">
-                Book now
-            </button>
-        </div>
-        {% else %}
-        <div>
-            <button
-                class="bg-yellow-500 w-[20px] ml-5  lg:ml-28 lg:w-auto hover:bg-yellow-500 md:w-auto  text-white font-bold py-2 px-4 md:px-8 rounded cursor-not-allowed"
-                disabled>
-                Book now
-            </button>
-        </div>
-        {% endif %}
-        </form>
+
+
 
 
 
