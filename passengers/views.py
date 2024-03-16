@@ -57,9 +57,14 @@ class UserRegistrationView(CreateView):
             return super().form_invalid(form) 
     
 def activate(request, uid64, token):
+
     try:
         uid = urlsafe_base64_decode(uid64).decode()
-        user = User._default_manager.get(pk=uid)
+    except (TypeError, ValueError, UnicodeDecodeError):
+        # Handle decoding errors
+        raise Http404("Invalid UID")
+    try:
+        user = User.objects.get(pk=uid)
     except(User.DoesNotExist):
         user = None 
     
