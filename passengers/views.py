@@ -37,7 +37,7 @@ class UserRegistrationView(CreateView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
             # Build the confirmation link
-            confirm_link = f"https://ticket-booking-system-gvch.onrender.com/passengers/active/{uid}/{token}"
+            confirm_link = f"https://ticket-booking-system-abog.onrender.com/passengers/active/{uid}/{token}"
 
             # Compose email
             email_subject = "Confirm Your Email"
