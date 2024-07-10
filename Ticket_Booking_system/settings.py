@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'Ticket_Booking_system.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
-        default='postgres://ticketbooker_user:WpaDHy5dxlU8scq8skMMBIwzrFVPddX7@dpg-cnmsbbacn0vc738ft55g-a.oregon-postgres.render.com/ticketbooker',
+        default='postgresql://ticketbooker_6fun_user:jL83p3zPyNrUYovIgpYtERUY3o3eFemv@dpg-cq724omehbks7398mi70-a.oregon-postgres.render.com/ticketbooker_6fun',
     )
 }
 
